@@ -13,7 +13,8 @@ public class NoteEditScreen extends Screen {
     private static final Identifier BACKGROUND = CrabbersDelightFabric.id("textures/gui/note.png");
     private static final int IMAGE_WIDTH = 192;
     private static final int IMAGE_HEIGHT = 192;
-    private static final int IMAGE_TOP = 2;
+    // 图片 + 下方按钮的整体高度，用来把整块内容在屏幕里垂直居中
+    private static final int CONTENT_HEIGHT = IMAGE_HEIGHT + 24;
     private static final int TEXT_WIDTH = 114;
     private static final int TEXT_HEIGHT = 128;
     private static final int TEXT_COLOR = 0x000000;
@@ -29,6 +30,7 @@ public class NoteEditScreen extends Screen {
     private ButtonWidget finalizeButton;
     private boolean signing;
     private int imageLeft;
+    private int imageTop;
 
     public NoteEditScreen(NoteEditTarget target, String initialText) {
         super(Text.translatable("gui.crabbersdelight.note.edit"));
@@ -39,17 +41,18 @@ public class NoteEditScreen extends Screen {
     @Override
     protected void init() {
         this.imageLeft = (this.width - IMAGE_WIDTH) / 2;
+        this.imageTop = Math.max(2, (this.height - CONTENT_HEIGHT) / 2);
         int left = this.imageLeft + 36;
 
-        this.textBox = new NotePageWidget(this.textRenderer, left, IMAGE_TOP + 30, TEXT_WIDTH, TEXT_HEIGHT,
+        this.textBox = new NotePageWidget(this.textRenderer, left, this.imageTop + 30, TEXT_WIDTH, TEXT_HEIGHT,
                 this.initialText, NoteData.MAX_NOTE_LENGTH, false);
         this.addDrawableChild(this.textBox);
 
-        this.titleBox = new NotePageWidget(this.textRenderer, left, 50, TEXT_WIDTH, 9,
+        this.titleBox = new NotePageWidget(this.textRenderer, left, this.imageTop + 48, TEXT_WIDTH, 9,
                 "", NoteData.MAX_TITLE_LENGTH, true);
         this.addDrawableChild(this.titleBox);
 
-        int buttonY = IMAGE_TOP + IMAGE_HEIGHT + 2;
+        int buttonY = this.imageTop + IMAGE_HEIGHT + 2;
         this.doneButton = this.addDrawableChild(ButtonWidget.builder(Text.translatable("gui.done"),
                         button -> saveAndClose())
                 .dimensions(this.width / 2 - 100, buttonY, 98, 20).build());
@@ -116,7 +119,7 @@ public class NoteEditScreen extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.renderBackground(context);
-        context.drawTexture(BACKGROUND, this.imageLeft, IMAGE_TOP, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
+        context.drawTexture(BACKGROUND, this.imageLeft, this.imageTop, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
         super.render(context, mouseX, mouseY, delta);
 
         if (this.signing) {
@@ -124,17 +127,17 @@ public class NoteEditScreen extends Screen {
 
             Text label = Text.translatable("gui.crabbersdelight.note.editTitle");
             context.drawText(this.textRenderer, label,
-                    left + (TEXT_WIDTH - this.textRenderer.getWidth(label)) / 2, 34, TEXT_COLOR, false);
+                    left + (TEXT_WIDTH - this.textRenderer.getWidth(label)) / 2, this.imageTop + 32, TEXT_COLOR, false);
 
             if (this.client != null && this.client.player != null) {
                 Text owner = Text.translatable("book.byAuthor", this.client.player.getName());
                 context.drawText(this.textRenderer, owner,
-                        left + (TEXT_WIDTH - this.textRenderer.getWidth(owner)) / 2, 60, TEXT_COLOR, false);
+                        left + (TEXT_WIDTH - this.textRenderer.getWidth(owner)) / 2, this.imageTop + 58, TEXT_COLOR, false);
             }
 
             context.drawTextWrapped(this.textRenderer,
                     Text.translatable("gui.crabbersdelight.note.finalizeWarning"),
-                    left, 82, TEXT_WIDTH, TEXT_COLOR);
+                    left, this.imageTop + 80, TEXT_WIDTH, TEXT_COLOR);
         }
     }
 

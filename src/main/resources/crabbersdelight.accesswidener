@@ -4,3 +4,14 @@ accessWidener v2 named
 # 1.20.1 的 EntityBucketItem 没有公开 getter，原来的反射用的是 Yarn 名，
 # 在正式环境（字段是混淆名 field_xxxxx）下必然失败 —— 所以改成访问拓宽。
 accessible field net/minecraft/item/EntityBucketItem entityType Lnet/minecraft/entity/EntityType;
+
+# 钓鱼钩的三个私有字段：1.20.1 没有公开 getter，自动饵 / 倒刺钩 / 钓点加速都要读它们。
+# 之前用反射按 Yarn 名抓字段，但发行版运行期只有 intermediary 名（field_23232 / field_7173 / field_7174），
+# 反射必然失败且静默失效 —— 改成访问拓宽后由 Loom 一并重映射，开发环境和发行版都能用。
+#
+#   caughtFish    -> 1.21 的 biting           （是否咬钩）
+#   waitCountdown -> 1.21 的 timeUntilLured   （还有多久来鱼）
+#   hookCountdown -> 1.21 的 nibble           （咬钩后还能补竿的 tick）
+accessible field net/minecraft/entity/projectile/FishingBobberEntity caughtFish Z
+accessible field net/minecraft/entity/projectile/FishingBobberEntity waitCountdown I
+accessible field net/minecraft/entity/projectile/FishingBobberEntity hookCountdown I

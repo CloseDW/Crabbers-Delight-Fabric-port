@@ -15,6 +15,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.EntityBucketItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
@@ -129,8 +130,8 @@ public class FishPlaqueBlock extends BlockWithEntity {
             if (type == null || plaque.hasFish()) {
                 return ActionResult.PASS;
             }
-            NbtCompound data = stack.getSubNbt("BucketVariantTag");
-            plaque.setFishData(type, data == null ? new NbtCompound() : data.copy(), stack.copyWithCount(1));
+            NbtCompound data = bucketEntityData(stack);
+            plaque.setFishData(type, data, stack.copyWithCount(1));
             world.updateListeners(pos, state, state, Block.NOTIFY_ALL);
             world.playSound(null, pos, SoundEvents.ENTITY_ITEM_FRAME_ADD_ITEM, SoundCategory.BLOCKS, 1.0f, 1.0f);
             if (!player.getAbilities().creativeMode) {
@@ -160,5 +161,28 @@ public class FishPlaqueBlock extends BlockWithEntity {
     @Nullable
     private static EntityType<?> getEntityTypeFromBucket(EntityBucketItem bucket) {
         return bucket.entityType;
+    }
+
+    // 把鱼桶里的物品 NBT 翻译成"实体自己认识的 NBT"。
+    // 1.20.1 不是把实体 NBT 原样塞进桶里：热带鱼的变体存在 int 型 "BucketVariantTag"，
+    // 而实体读写用的键是 "Variant"；美西螈同样是 "Variant"（外加 "FromBucket"）。
+    // 之前直接 getSubNbt("BucketVariantTag")（只取复合标签）永远拿到 null，
+    // 结果鱼牌上永远显示默认花色的热带鱼。
+    private static NbtCompound bucketEntityData(ItemStack bucketStack) {
+        NbtCompound data = new NbtCompound();
+        NbtCompound bucketNbt = bucketStack.getNbt();
+        if (bucketNbt == null) {
+            return data;
+        }
+        if (bucketNbt.contains("BucketVariantTag", NbtElement.INT_TYPE)) {
+            data.putInt("Variant", bucketNbt.getInt("BucketVariantTag"));
+        }
+        if (bucketNbt.contains("Variant", NbtElement.INT_TYPE)) {
+            data.putInt("Variant", bucketNbt.getInt("Variant"));
+        }
+        if (bucketNbt.contains("FromBucket", NbtElement.BYTE_TYPE)) {
+            data.putBoolean("FromBucket", bucketNbt.getBoolean("FromBucket"));
+        }
+        return data;
     }
 }

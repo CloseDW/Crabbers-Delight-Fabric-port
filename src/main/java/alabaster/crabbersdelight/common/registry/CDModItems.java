@@ -201,8 +201,9 @@ public class CDModItems {
             CrabbersDelightFabric.id("bottled_note"), new BottledNoteItem(new Item.Settings().maxCount(16)));
     public static final Item MESSAGE_BOTTLE = Registry.register(Registries.ITEM,
             CrabbersDelightFabric.id("message_bottle"), new MessageBottleItem(new Item.Settings().maxCount(16)));
+    // 已签名便条也是 BlockItem：能贴墙 / 平铺（1.21 版同样如此），放置后写回签名数据
     public static final Item SIGNED_NOTE = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("signed_note"),
-            new SignedNoteItem(new Item.Settings().maxCount(16)));
+            new SignedNoteItem(CDModBlocks.NOTE_BLOCK, new Item.Settings().maxCount(16)));
     public static final Item FISH_PLAQUE = blockItem("fish_plaque", CDModBlocks.FISH_PLAQUE);
     private static Item blockItem(String name, Block block) {
         return Registry.register(Registries.ITEM, CrabbersDelightFabric.id(name),

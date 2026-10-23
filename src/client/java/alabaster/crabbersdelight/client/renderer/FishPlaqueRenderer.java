@@ -47,7 +47,7 @@ public class FishPlaqueRenderer implements BlockEntityRenderer<FishPlaqueBlockEn
             Map.entry("crabbersdelight:crab", new MobOverride(-90f, 90f, 180f, 0.0f, -0.0625f, -0.35f))
     );
 
-    private record CachedFish(Identifier typeId, Entity entity) {
+    private record CachedFish(Identifier typeId, int dataHash, Entity entity) {
     }
 
     private final EntityRenderDispatcher entityRenderDispatcher;
@@ -154,8 +154,11 @@ public class FishPlaqueRenderer implements BlockEntityRenderer<FishPlaqueBlockEn
         }
 
         Identifier typeId = plaque.getEntityTypeId();
+        // 缓存还要看实体数据：同一种鱼换一条不同变体（热带鱼花色、美西螈颜色）时
+        // 只比对 kind 会让鱼牌继续显示上一条的数据。
+        int dataHash = plaque.getEntityData().hashCode();
         CachedFish cached = cache.get(key);
-        if (cached != null && cached.typeId().equals(typeId)) {
+        if (cached != null && cached.typeId().equals(typeId) && cached.dataHash() == dataHash) {
             return cached.entity();
         }
 
@@ -170,7 +173,7 @@ public class FishPlaqueRenderer implements BlockEntityRenderer<FishPlaqueBlockEn
             } catch (Exception ignored) {
             }
         }
-        cache.put(key, new CachedFish(typeId, entity));
+        cache.put(key, new CachedFish(typeId, dataHash, entity));
         return entity;
     }
 }

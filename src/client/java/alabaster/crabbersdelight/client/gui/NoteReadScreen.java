@@ -15,7 +15,8 @@ public class NoteReadScreen extends Screen {
     private static final Identifier BACKGROUND = CrabbersDelightFabric.id("textures/gui/note.png");
     private static final int IMAGE_WIDTH = 192;
     private static final int IMAGE_HEIGHT = 192;
-    private static final int IMAGE_TOP = 2;
+    // 图片 + 下方按钮的整体高度，用来把整块内容在屏幕里垂直居中
+    private static final int CONTENT_HEIGHT = IMAGE_HEIGHT + 24;
     private static final int TEXT_WIDTH = 114;
     private static final int LINE_HEIGHT = 9;
     private static final int TEXT_COLOR = 0x000000;
@@ -26,6 +27,7 @@ public class NoteReadScreen extends Screen {
 
     private List<OrderedText> wrappedLines;
     private int imageLeft;
+    private int imageTop;
 
     public NoteReadScreen(String title, String text, String author) {
         super(Text.translatable("gui.crabbersdelight.note.read"));
@@ -37,9 +39,10 @@ public class NoteReadScreen extends Screen {
     @Override
     protected void init() {
         this.imageLeft = (this.width - IMAGE_WIDTH) / 2;
+        this.imageTop = Math.max(2, (this.height - CONTENT_HEIGHT) / 2);
         this.wrappedLines = this.textRenderer.wrapLines(Text.literal(this.text), TEXT_WIDTH);
 
-        int buttonY = IMAGE_TOP + IMAGE_HEIGHT + 2;
+        int buttonY = this.imageTop + IMAGE_HEIGHT + 2;
         this.addDrawableChild(ButtonWidget.builder(Text.translatable("gui.done"), button -> this.close())
                 .dimensions(this.width / 2 - 100, buttonY, 200, 20).build());
     }
@@ -52,16 +55,16 @@ public class NoteReadScreen extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         this.renderBackground(context);
-        context.drawTexture(BACKGROUND, this.imageLeft, IMAGE_TOP, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
+        context.drawTexture(BACKGROUND, this.imageLeft, this.imageTop, 0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
         super.render(context, mouseX, mouseY, delta);
 
         int left = this.imageLeft + 36;
-        int top = IMAGE_TOP + 30;
+        int top = this.imageTop + 30;
 
         if (!this.title.isBlank()) {
             Text titleText = Text.literal(this.title);
             context.drawText(this.textRenderer, titleText,
-                    left + (TEXT_WIDTH - this.textRenderer.getWidth(titleText)) / 2, 18, TEXT_COLOR, false);
+                    left + (TEXT_WIDTH - this.textRenderer.getWidth(titleText)) / 2, this.imageTop + 16, TEXT_COLOR, false);
         }
 
         List<OrderedText> lines = this.wrappedLines == null ? List.of() : this.wrappedLines;

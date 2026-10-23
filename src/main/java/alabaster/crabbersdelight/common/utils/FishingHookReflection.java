@@ -2,71 +2,35 @@ package alabaster.crabbersdelight.common.utils;
 
 import net.minecraft.entity.projectile.FishingBobberEntity;
 
-import java.lang.reflect.Field;
-
-// 钓钩私有字段反射（对应 1.21 版 FishingHookReflection）。
-// 1.20.1 的 Yarn 字段名与 1.21 Mojmap 不同：
-//   biting            -> caughtFish（布尔）
-//   timeUntilLured    -> waitCountdown（在此之前还要等多久才来鱼）
-//   nibble / 咬钩窗口 -> hookCountdown（已上钩后还能补竿的剩余 tick）
-public class FishingHookReflection {
-    private static Field caughtFishField;
-    private static Field hookCountdownField;
-    private static Field waitCountdownField;
-
-    static {
-        caughtFishField = findField("caughtFish", "biting");
-        hookCountdownField = findField("hookCountdown", "nibble");
-        waitCountdownField = findField("waitCountdown", "timeUntilLured");
-    }
-
-    private static Field findField(String... names) {
-        for (String name : names) {
-            try {
-                Field field = FishingBobberEntity.class.getDeclaredField(name);
-                field.setAccessible(true);
-                return field;
-            } catch (NoSuchFieldException ignored) {
-            }
-        }
-        return null;
+// 钓钩私有字段访问（对应 1.21 版 FishingHookReflection）。
+// 1.20.1 的 Yarn 字段名 -> 1.21 Mojmap 名：
+//   caughtFish    -> biting          （是否咬钩）
+//   waitCountdown -> timeUntilLured  （还有多久来鱼）
+//   hookCountdown -> nibble          （咬钩后还能补竿的 tick）
+//
+// 这里不再用反射：反射靠字符串字段名，而字符串不会被 Loom 重映射，
+// 发行版里类被改成 intermediary（net.minecraft.class_1536）、字段变成 field_23232，
+// 按 "caughtFish" 去 getDeclaredField 必然 NoSuchFieldException，三个功能就静默失效。
+// 改成 access widener（见 crabbersdelight.accesswidener）后字段在编译期就是 public，
+// 由 Loom 一起重映射，开发环境和发行版行为一致。
+public final class FishingHookReflection {
+    private FishingHookReflection() {
     }
 
     public static boolean isBiting(FishingBobberEntity hook) {
-        if (caughtFishField == null) {
-            return false;
-        }
-        try {
-            return caughtFishField.getBoolean(hook);
-        } catch (IllegalAccessException e) {
-            return false;
-        }
+        return hook.caughtFish;
     }
 
     public static void capLureTime(FishingBobberEntity hook, int maxTicks) {
-        if (waitCountdownField == null) {
-            return;
-        }
-        try {
-            int current = waitCountdownField.getInt(hook);
-            if (current > maxTicks) {
-                waitCountdownField.setInt(hook, maxTicks);
-            }
-        } catch (IllegalAccessException ignored) {
+        if (hook.waitCountdown > maxTicks) {
+            hook.waitCountdown = maxTicks;
         }
     }
 
     // 延长“已上钩”窗口，给自动/倒刺饵更多补竿时间
     public static void extendNibbleTime(FishingBobberEntity hook, int minTicks) {
-        if (hookCountdownField == null) {
-            return;
-        }
-        try {
-            int current = hookCountdownField.getInt(hook);
-            if (current > 0 && current < minTicks) {
-                hookCountdownField.setInt(hook, minTicks);
-            }
-        } catch (IllegalAccessException ignored) {
+        if (hook.hookCountdown > 0 && hook.hookCountdown < minTicks) {
+            hook.hookCountdown = minTicks;
         }
     }
 }

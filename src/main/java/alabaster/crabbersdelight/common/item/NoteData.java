@@ -12,8 +12,10 @@ public final class NoteData {
     public static final String UNSIGNED_TEXT_KEY = "crabbersdelight:note_text";
     public static final String SIGNED_KEY = "crabbersdelight:note";
 
-    public static final int MAX_NOTE_LENGTH = 2048;
-    public static final int MAX_TITLE_LENGTH = 32;
+    // 与 1.21 版一致（CDModDataComponents.MAX_NOTE_LENGTH / MAX_TITLE_LENGTH）。
+    // 注意这两个值会同时作用于编辑框输入上限、网络包截断和方块实体写入。
+    public static final int MAX_NOTE_LENGTH = 255;
+    public static final int MAX_TITLE_LENGTH = 16;
 
     public static final int GENERATION_ORIGINAL = 0;
     public static final int GENERATION_COPY = 1;
