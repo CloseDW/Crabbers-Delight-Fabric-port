@@ -86,6 +86,9 @@ public class CDModCreativeTabs {
             entries.add(CDModItems.CRAB_CAKES);
             entries.add(CDModItems.CRAB_LEGS);
             entries.add(CDModItems.FISH_STICK);
+            entries.add(CDModItems.FRIED_FISH);
+            entries.add(CDModItems.FISH_SANDWICH);
+            entries.add(CDModItems.TURTLE_STEW);
             entries.add(CDModItems.SURF_AND_TURF);
             entries.add(CDModItems.SHRIMP_SKEWER);
             entries.add(CDModItems.CLAM_BAKE);
@@ -95,8 +98,8 @@ public class CDModCreativeTabs {
             entries.add(CDModItems.TROPICAL_FISH_SLICE);
             entries.add(CDModItems.COOKED_TROPICAL_FISH_SLICE);
             entries.add(CDModItems.STUFFED_NAUTILUS_SHELL);
-            entries.add(CDModItems.SQUID_KEBOB);
-            entries.add(CDModItems.FROG_LEG_KEBOB);
+            entries.add(CDModItems.SQUID_KEBAB);
+            entries.add(CDModItems.FROG_LEG_KEBAB);
             entries.add(CDModItems.JAR_OF_PICKLES);
             entries.add(CDModItems.KELP_SHAKE);
             entries.add(CDModItems.SEA_PICKLE_JUICE);
@@ -123,6 +126,29 @@ public class CDModCreativeTabs {
             entries.add(CDModItems.PEARL_BLOCK);
             entries.add(CDModItems.NAUTILUS_SHELL_BLOCK);
             entries.add(CDModItems.SEA_PICKLE_CRATE);
+
+            // 1.3.x 新增：蚯蚓 / 蚯蚓土 / 蚯蚓箱 / 海螺
+            entries.add(CDModItems.WORM);
+            entries.add(CDModItems.WORMY_DIRT);
+            entries.add(CDModItems.WORM_BIN);
+            entries.add(CDModItems.CONCH);
+
+            entries.add(CDModItems.FISH_PLAQUE);
+            entries.add(CDModItems.NOTE);
+            entries.add(CDModItems.SIGNED_NOTE);
+            entries.add(CDModItems.MESSAGE_BOTTLE);
+            entries.add(CDModItems.BOTTLED_NOTE);
+            // 1.3.x 新增：钓具箱与钓鱼装备
+            entries.add(CDModItems.TACKLE_BOX);
+            entries.add(CDModItems.FISHING_LINE);
+            entries.add(CDModItems.BARBED_LURE);
+            entries.add(CDModItems.DOUBLE_LURE);
+            entries.add(CDModItems.MAGNETIC_LURE);
+            entries.add(CDModItems.AUTOMATIC_LURE);
+            entries.add(CDModItems.STORM_LURE);
+
+            // 1.3.x 新增：救生圈
+            entries.add(CDModItems.LIFE_PRESERVER);
         });
     }
 }

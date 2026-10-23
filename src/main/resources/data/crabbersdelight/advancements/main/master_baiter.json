@@ -1,0 +1,24 @@
+{
+  "parent": "crabbersdelight:main/gone_fishin",
+  "criteria": {
+    "bait_catch": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "crabbersdelight.advancement.master_baiter.desc"
+    },
+    "icon": {
+      "item": "crabbersdelight:worm"
+    },
+    "title": {
+      "translate": "crabbersdelight.advancement.master_baiter"
+    }
+  },
+  "requirements": [
+    [
+      "bait_catch"
+    ]
+  ]
+}

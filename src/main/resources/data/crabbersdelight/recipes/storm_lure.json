@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "i": { "item": "minecraft:iron_nugget" },
+    "l": { "item": "minecraft:lightning_rod" }
+  },
+  "pattern": [
+    "  i",
+    "l i",
+    " i "
+  ],
+  "result": {
+    "item": "crabbersdelight:storm_lure"
+  },
+  "show_notification": true
+}

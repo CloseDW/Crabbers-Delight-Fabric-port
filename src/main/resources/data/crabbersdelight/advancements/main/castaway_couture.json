@@ -1,0 +1,34 @@
+{
+  "parent": "crabbersdelight:main/root",
+  "criteria": {
+    "equip_coconut_helmet": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "crabbersdelight:coconut_helmet"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "crabbersdelight.advancement.castaway_couture.desc"
+    },
+    "frame": "challenge",
+    "icon": {
+      "item": "crabbersdelight:coconut_helmet"
+    },
+    "title": {
+      "translate": "crabbersdelight.advancement.castaway_couture"
+    }
+  },
+  "requirements": [
+    [
+      "equip_coconut_helmet"
+    ]
+  ]
+}

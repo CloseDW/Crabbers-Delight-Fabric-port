@@ -3,11 +3,12 @@ package alabaster.crabbersdelight.integration.jei;
 import alabaster.crabbersdelight.CrabbersDelightFabric;
 import alabaster.crabbersdelight.common.Config;
 import alabaster.crabbersdelight.common.registry.CDModItems;
-import com.google.common.collect.ImmutableList;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
@@ -19,19 +20,20 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class CrabTrapCategory implements IRecipeCategory<CrabTrapRecipeWrapper> {
     private static final Identifier CRAB_TRAP_LOCATION =
             CrabbersDelightFabric.id("textures/gui/jei_crab_trap.png");
+    private static final int WIDTH = 79;
+    private static final int HEIGHT = 39;
+
     private final IDrawable background;
     private final IDrawable icon;
     private final Text title;
 
     public CrabTrapCategory(IGuiHelper helper) {
         this.title = Text.translatable("block.crabbersdelight.crab_trap");
-        this.background = helper.createDrawable(CRAB_TRAP_LOCATION, 0, 0, 79, 39);
+        this.background = helper.createDrawable(CRAB_TRAP_LOCATION, 0, 0, WIDTH, HEIGHT);
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(CDModItems.CRAB_TRAP));
     }
 
@@ -45,9 +47,20 @@ public class CrabTrapCategory implements IRecipeCategory<CrabTrapRecipeWrapper> 
         return this.title;
     }
 
+    // JEI 15.20：背景不再通过 getBackground() 提供，改为声明尺寸 + 在 createRecipeExtras 里画
     @Override
-    public IDrawable getBackground() {
-        return this.background;
+    public int getWidth() {
+        return WIDTH;
+    }
+
+    @Override
+    public int getHeight() {
+        return HEIGHT;
+    }
+
+    @Override
+    public void createRecipeExtras(IRecipeExtrasBuilder builder, CrabTrapRecipeWrapper recipe, IFocusGroup focuses) {
+        builder.addDrawable(this.background, 0, 0);
     }
 
     @Override
@@ -64,19 +77,20 @@ public class CrabTrapCategory implements IRecipeCategory<CrabTrapRecipeWrapper> 
                 && iconPosY <= mouseY && mouseY < iconPosY + iconHeight;
     }
 
+    // JEI 15.20：getTooltipStrings 已废弃，改为往 ITooltipBuilder 里塞
     @Override
-    public List<Text> getTooltipStrings(CrabTrapRecipeWrapper recipe, IRecipeSlotsView recipeSlotsView,
-                                        double mouseX, double mouseY) {
-        if (iconPosition(mouseX, mouseY)) {
-            int min = Config.MIN_TICKS.get();
-            int max = Config.MAX_TICKS.get();
-            if (max > min) {
-                return ImmutableList.of(Text.literal("Collects every " + min + "-" + max + " ticks"));
-            }
-            return ImmutableList.of(Text.literal("Error: Minimum value is higher than maximum value!")
-                    .formatted(Formatting.RED));
+    public void getTooltip(ITooltipBuilder tooltip, CrabTrapRecipeWrapper recipe, IRecipeSlotsView recipeSlotsView,
+                           double mouseX, double mouseY) {
+        if (!iconPosition(mouseX, mouseY)) {
+            return;
         }
-        return Collections.emptyList();
+        int min = Config.MIN_TICKS.get();
+        int max = Config.MAX_TICKS.get();
+        if (max > min) {
+            tooltip.add(Text.literal("Collects every " + min + "-" + max + " ticks"));
+        } else {
+            tooltip.add(Text.literal("Error: Minimum value is higher than maximum value!").formatted(Formatting.RED));
+        }
     }
 
     @Override

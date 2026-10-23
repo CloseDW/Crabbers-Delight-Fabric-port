@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "S": { "item": "minecraft:stick" },
+    "s": { "item": "minecraft:string" }
+  },
+  "pattern": [
+    "sss",
+    "sSs",
+    "sss"
+  ],
+  "result": {
+    "item": "crabbersdelight:fishing_line"
+  },
+  "show_notification": true
+}

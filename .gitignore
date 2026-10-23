@@ -1,59 +1,52 @@
-# gradle
-
+# ===== Gradle / 构建产物 =====
 .gradle/
 build/
 out/
 classes/
+!gradle/wrapper/gradle-wrapper.jar
 
-# 游戏运行数据（开发环境）
-
+# ===== 游戏运行数据（开发环境，本地内容，不上传）=====
 run/
+runs/
 
-# 本地构建日志
-
+# ===== 本地日志 / 崩溃报告 =====
 *.log
+logs/
+crash-reports/
+hs_err_*.log
+replay_*.log
+*.hprof
+*.jfr
+build.log
+build.err.log
 
-# Reasonix 工作区附件（本地测试/日志，不应上传）
+# ===== 本地测试文档 / 临时备份（不上传）=====
+docs/
+*.bak
+*.jar.bak
+*.orig
+*.rej
+*.old
+*.fabric-before.png
+*.tmp
 
-.reasonix/
-
-# eclipse
-
-*.launch
-
-# idea
-
+# ===== IDE =====
 .idea/
 *.iml
 *.ipr
 *.iws
-
-# vscode
-
+*.launch
 .settings/
 .vscode/
 bin/
 .classpath
 .project
 
-# macos
-
-*.DS_Store
-
-# fabric
-
-run/
-
-# java
-
-hs_err_*.log
-replay_*.log
-*.hprof
-*.jfr
-
-# local build logs
-build.log
-build.err.log
-
-# tool caches
+# ===== 工作区 / 工具缓存 =====
 .reasonix/
+.dsh/
+.athena/
+
+# ===== 系统 =====
+*.DS_Store
+Thumbs.db

@@ -8,5 +8,5 @@
   "result": [
     { "count": 2, "item": "crabbersdelight:coral_fragments" }
   ],
-    "tool": { "tag": "c:tools/pickaxes" }
+    "tool": { "tag": "minecraft:pickaxes" }
 }

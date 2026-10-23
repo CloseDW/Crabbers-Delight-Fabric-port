@@ -1,7 +1,6 @@
 {
   "criteria": {
     "seeds": {
-      "conditions": {},
       "trigger": "minecraft:inventory_changed"
     }
   },
@@ -11,10 +10,8 @@
     "description": {
       "translate": "crabbersdelight.advancement.root.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
-      "item": "crabbersdelight:clawster"
+      "item": "crabbersdelight:crab"
     },
     "show_toast": false,
     "title": {
@@ -25,6 +22,5 @@
     [
       "seeds"
     ]
-  ],
-  "sends_telemetry_event": true
+  ]
 }

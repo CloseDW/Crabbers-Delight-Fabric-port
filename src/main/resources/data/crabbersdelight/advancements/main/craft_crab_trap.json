@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "crabbersdelight:crab_trap"
-            ]
+            "items": [ "crabbersdelight:crab_trap" ]
           }
         ]
       },
@@ -15,16 +13,12 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "crabbersdelight.advancement.craft_crab_trap.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "crabbersdelight:crab_trap"
     },
-    "show_toast": true,
     "title": {
       "translate": "crabbersdelight.advancement.craft_crab_trap"
     }
@@ -33,6 +27,5 @@
     [
       "crab_trap"
     ]
-  ],
-  "sends_telemetry_event": true
+  ]
 }

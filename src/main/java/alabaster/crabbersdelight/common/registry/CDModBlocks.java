@@ -5,12 +5,17 @@ import alabaster.crabbersdelight.common.block.CDSaplingBlock;
 import alabaster.crabbersdelight.common.block.CDLeavesBlock;
 import alabaster.crabbersdelight.common.block.CoconutBlock;
 import alabaster.crabbersdelight.common.block.CrabTrapBlock;
+import alabaster.crabbersdelight.common.block.FishPlaqueBlock;
+import alabaster.crabbersdelight.common.block.NoteBlock;
 import alabaster.crabbersdelight.common.block.CDHangingSignBlock;
 import alabaster.crabbersdelight.common.block.CDSignBlock;
 import alabaster.crabbersdelight.common.block.CDWallHangingSignBlock;
 import alabaster.crabbersdelight.common.block.CDWallSignBlock;
 import alabaster.crabbersdelight.common.block.NautilusShellBlock;
 import alabaster.crabbersdelight.common.block.SeashellBlock;
+import alabaster.crabbersdelight.common.block.LifePreserverBlock;
+import alabaster.crabbersdelight.common.block.TackleBoxBlock;
+import alabaster.crabbersdelight.common.block.WormBinBlock;
 import alabaster.crabbersdelight.common.worldgen.tree.PalmTreeGrower;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -110,6 +115,29 @@ public class CDModBlocks {
     public static final Block SEA_PICKLE_CRATE = Registry.register(Registries.BLOCK, CrabbersDelightFabric.id("sea_pickle_crate"),
             new SlabBlock(AbstractBlock.Settings.copy(Blocks.OAK_PLANKS).strength(2.0F, 3.0F).sounds(BlockSoundGroup.WOOD)));
 
+    // 1.3.x 新增：蚯蚓箱 / 蚯蚓土
+    public static final Block WORM_BIN = Registry.register(Registries.BLOCK, CrabbersDelightFabric.id("worm_bin"),
+            new WormBinBlock(AbstractBlock.Settings.copy(Blocks.OAK_PLANKS).strength(2.0F).sounds(BlockSoundGroup.WOOD)));
+    public static final Block WORMY_DIRT = Registry.register(Registries.BLOCK, CrabbersDelightFabric.id("wormy_dirt"),
+            new Block(AbstractBlock.Settings.copy(Blocks.DIRT)));
+
+    // 1.3.x 新增：钓具箱（掉落由 TackleBoxBlock#getDroppedStacks 接管，见空战利品表）
+    public static final Block TACKLE_BOX = Registry.register(Registries.BLOCK, CrabbersDelightFabric.id("tackle_box"),
+            new TackleBoxBlock(AbstractBlock.Settings.copy(Blocks.OAK_PLANKS).strength(2.5F)
+                    .sounds(BlockSoundGroup.WOOD)));
+
+    // 1.3.x 新增：救生圈（可贴地/墙/天花板，含水）
+    public static final Block LIFE_PRESERVER = Registry.register(Registries.BLOCK, CrabbersDelightFabric.id("life_preserver"),
+            new LifePreserverBlock(AbstractBlock.Settings.copy(Blocks.WHITE_WOOL).strength(0.5F)
+                    .sounds(BlockSoundGroup.WOOL).nonOpaque()));
+
+    // 1.3.x 新增：鱼牌（挂墙展示鱼桶里的生物）
+    public static final Block FISH_PLAQUE = Registry.register(Registries.BLOCK, CrabbersDelightFabric.id("fish_plaque"),
+            new FishPlaqueBlock(AbstractBlock.Settings.copy(Blocks.OAK_PLANKS).strength(1.0F)
+                    .sounds(BlockSoundGroup.WOOD).nonOpaque()));
+    // 1.3.x 新增：便条方块（可贴墙 / 平铺，方块实体存正文）
+    public static final Block NOTE_BLOCK = Registry.register(Registries.BLOCK, CrabbersDelightFabric.id("note_block"),
+            new NoteBlock(AbstractBlock.Settings.copy(Blocks.WHITE_WOOL).strength(0.3F).nonOpaque()));
     private static Block storageBlock(String name) {
         return Registry.register(Registries.BLOCK, CrabbersDelightFabric.id(name),
                 new Block(AbstractBlock.Settings.copy(Blocks.OAK_PLANKS).strength(2.0F, 3.0F).sounds(BlockSoundGroup.WOOD)));

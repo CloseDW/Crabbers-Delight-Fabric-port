@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_ingredient": {
+      "conditions": { "items": [ { "items": [ "crabbersdelight:coconut_milk", "crabbersdelight:coconut_halve", "minecraft:sugar", "minecraft:egg", "crabbersdelight:coconut_pudding" ] } ] },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "crabbersdelight:coconut_pudding"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_ingredient",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "crabbersdelight:coconut_pudding"
+    ]
+  }
+}

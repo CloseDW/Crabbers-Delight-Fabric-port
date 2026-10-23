@@ -1,0 +1,6 @@
+accessWidener v2 named
+
+# 鱼牌需要读取鱼桶里的实体类型。
+# 1.20.1 的 EntityBucketItem 没有公开 getter，原来的反射用的是 Yarn 名，
+# 在正式环境（字段是混淆名 field_xxxxx）下必然失败 —— 所以改成访问拓宽。
+accessible field net/minecraft/item/EntityBucketItem entityType Lnet/minecraft/entity/EntityType;

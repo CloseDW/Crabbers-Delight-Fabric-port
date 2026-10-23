@@ -18,6 +18,16 @@ repositories {
 loom {
 	splitEnvironmentSourceSets()
 
+	// 访问拓宽：鱼牌要读 EntityBucketItem 的私有 entityType 字段
+	accessWidenerPath = file("src/main/resources/crabbersdelight.accesswidener")
+
+	// 生成 mixin 反混淆映射（refmap）：开发环境不需要，但正式分发的 jar 必须有，
+	// 否则别人用发行版时所有 @Inject 都会因为方法名对不上而失效。
+	mixin {
+		useLegacyMixinAp = true
+		defaultRefmapName = "crabbersdelight-refmap.json"
+	}
+
 	mods {
 		"crabbersdelight" {
 			sourceSet sourceSets.main
@@ -42,7 +52,13 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	// Farmer's Delight（Refabricated，Fabric 移植版）——原模组的必需依赖
+	// 运行时：玩家装的是 run/mods 里的 2.5.5，由 Loader 在开发环境里自动重映射并加载；
+	// 这里的 2.1.2 是为了带上它依赖的 porting_lib（2.5.5 的 POM 不声明 porting_lib，
+	// 直接用它当 modImplementation 会因为找不到 porting_lib 的 LazyRegistrar 之类而启动崩溃）。
 	modImplementation "maven.modrinth:farmers-delight-refabricated:1.20.1-2.1.2"
+	// 编译期再看一份 2.5.5 的 API（只为让砧板 mixin 能写上 3 参数的 rollResults；
+	// 不进运行时 classpath，避免和 run/mods 里的 2.5.5 打架）
+	modCompileOnly("maven.modrinth:farmers-delight-refabricated:1.20.1-2.5.5") { transitive = false }
 
 	// Forge Config API Port：在 Fabric 上提供 ForgeConfigSpec，配置代码几乎可以原样移植
 	modImplementation "maven.modrinth:forge-config-api-port:v8.0.3-1.20.1-Fabric"

@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:fishing",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:pufferfish",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "name": "crabbersdelight:coral_fragments",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "crabbersdelight:coconut",
+          "weight": 2
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

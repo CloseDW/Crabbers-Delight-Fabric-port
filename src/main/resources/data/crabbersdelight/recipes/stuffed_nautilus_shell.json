@@ -3,7 +3,7 @@
   "cookingtime": 200,
   "experience": 1,
   "ingredients": [
-    { "tag": "c:cooked_fishes" },
+    { "tag": "c:foods/cooked_fishes" },
     { "item": "minecraft:kelp" },
     { "item": "minecraft:kelp" },
     { "item": "minecraft:kelp" }

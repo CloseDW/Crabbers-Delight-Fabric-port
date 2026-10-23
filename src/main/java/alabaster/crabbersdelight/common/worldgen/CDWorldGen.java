@@ -41,5 +41,13 @@ public class CDWorldGen {
                         BiomeKeys.LUKEWARM_OCEAN, BiomeKeys.DEEP_LUKEWARM_OCEAN),
                 GenerationStep.Feature.VEGETAL_DECORATION,
                 seashellsUnderwaterPlacedKey);
+
+        // 虫土：主世界地下矿物阶段（对应 NEO 的 add_wormy_dirt biome modifier）
+        RegistryKey<PlacedFeature> wormyDirtPlacedKey = RegistryKey.of(
+                RegistryKeys.PLACED_FEATURE, CrabbersDelightFabric.id("wormy_dirt_placed"));
+        BiomeModifications.addFeature(
+                BiomeSelectors.foundInOverworld(),
+                GenerationStep.Feature.UNDERGROUND_ORES,
+                wormyDirtPlacedKey);
     }
 }

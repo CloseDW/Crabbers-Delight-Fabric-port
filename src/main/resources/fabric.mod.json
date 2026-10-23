@@ -15,6 +15,8 @@
   "license": "MIT",
   "icon": "assets/crabbersdelight/icon.png",
   "environment": "*",
+  "accessWidener": "crabbersdelight.accesswidener",
+
   "entrypoints": {
     "main": [
       "alabaster.crabbersdelight.CrabbersDelightFabric"

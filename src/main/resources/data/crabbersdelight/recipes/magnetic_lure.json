@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "i": { "item": "minecraft:iron_nugget" },
+    "I": { "item": "minecraft:iron_ingot" },
+    "l": { "item": "minecraft:lapis_lazuli" },
+    "r": { "item": "minecraft:redstone" }
+  },
+  "pattern": [
+    " i ",
+    " I ",
+    "rIl"
+  ],
+  "result": {
+    "item": "crabbersdelight:magnetic_lure"
+  },
+  "show_notification": true
+}

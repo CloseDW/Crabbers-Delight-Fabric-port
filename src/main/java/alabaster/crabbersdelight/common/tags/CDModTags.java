@@ -27,4 +27,12 @@ public class CDModTags {
             TagKey.of(RegistryKeys.ITEM, CrabbersDelightFabric.id("raw_squid"));
     public static final TagKey<Item> COOKED_SQUID =
             TagKey.of(RegistryKeys.ITEM, CrabbersDelightFabric.id("cooked_squid"));
+
+    // 1.3.x 新增：钓鱼装备标签
+    public static final TagKey<Item> FISHING_BAIT =
+            TagKey.of(RegistryKeys.ITEM, CrabbersDelightFabric.id("fishing_bait"));
+    public static final TagKey<Item> FISHING_LURE =
+            TagKey.of(RegistryKeys.ITEM, CrabbersDelightFabric.id("fishing_lure"));
+    public static final TagKey<Item> FISHING_LINE =
+            TagKey.of(RegistryKeys.ITEM, CrabbersDelightFabric.id("fishing_line"));
 }

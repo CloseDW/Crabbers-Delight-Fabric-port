@@ -3,7 +3,7 @@
   "category": "food",
   "ingredients": [
     { "item": "minecraft:stick" },
-    { "tag": "c:cooked_fishes" }
+    { "tag": "c:foods/cooked_fishes" }
   ],
   "result": {
     "item": "crabbersdelight:fish_stick"

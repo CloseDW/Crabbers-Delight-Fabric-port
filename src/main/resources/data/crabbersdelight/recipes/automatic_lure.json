@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "i": { "item": "minecraft:iron_nugget" },
+    "I": { "item": "minecraft:iron_ingot" },
+    "o": { "item": "minecraft:observer" },
+    "r": { "item": "minecraft:redstone" },
+    "t": { "item": "minecraft:tripwire_hook" }
+  },
+  "pattern": [
+    " i ",
+    " I ",
+    "rot"
+  ],
+  "result": {
+    "item": "crabbersdelight:automatic_lure"
+  },
+  "show_notification": true
+}

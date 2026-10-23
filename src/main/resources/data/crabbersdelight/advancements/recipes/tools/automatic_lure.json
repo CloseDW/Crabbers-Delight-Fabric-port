@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_ingredient": {
+      "conditions": { "items": [ { "items": [ "minecraft:iron_nugget", "minecraft:iron_ingot", "minecraft:observer", "minecraft:redstone", "minecraft:tripwire_hook", "crabbersdelight:automatic_lure" ] } ] },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "crabbersdelight:automatic_lure"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_ingredient",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "crabbersdelight:automatic_lure"
+    ]
+  }
+}

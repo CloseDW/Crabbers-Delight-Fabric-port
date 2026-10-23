@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "i": { "item": "minecraft:iron_ingot" },
+    "d": { "item": "minecraft:diamond" }
+  },
+  "pattern": [
+    " i ",
+    " i ",
+    "idi"
+  ],
+  "result": {
+    "item": "crabbersdelight:double_lure"
+  },
+  "show_notification": true
+}

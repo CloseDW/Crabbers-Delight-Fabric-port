@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "crabbersdelight:barbed_lure",
+    "crabbersdelight:double_lure",
+    "crabbersdelight:magnetic_lure",
+    "crabbersdelight:automatic_lure",
+    "crabbersdelight:storm_lure"
+  ]
+}

@@ -7,7 +7,18 @@ import alabaster.crabbersdelight.common.item.CDBoatItem;
 import alabaster.crabbersdelight.common.item.ChumItem;
 import alabaster.crabbersdelight.common.item.CoconutHelmetItem;
 import alabaster.crabbersdelight.common.item.CrabClawItem;
+import alabaster.crabbersdelight.common.item.BottledNoteItem;
+import alabaster.crabbersdelight.common.item.MessageBottleItem;
+import alabaster.crabbersdelight.common.item.NoteItem;
+import alabaster.crabbersdelight.common.item.SignedNoteItem;
 import alabaster.crabbersdelight.common.item.PearlNecklaceItem;
+import alabaster.crabbersdelight.common.item.ConchItem;
+import alabaster.crabbersdelight.common.item.WormItem;
+import alabaster.crabbersdelight.common.item.FishingLineItem;
+import alabaster.crabbersdelight.common.item.LifePreserverItem;
+import alabaster.crabbersdelight.common.item.LureItem;
+import alabaster.crabbersdelight.common.item.TackleBoxItem;
+import alabaster.crabbersdelight.common.item.fishing.LureEffect;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.EntityBucketItem;
@@ -41,6 +52,10 @@ public class CDModItems {
 
     public static Item.Settings shellFoodItem(FoodComponent food) {
         return new Item.Settings().food(food).recipeRemainder(Items.NAUTILUS_SHELL);
+    }
+
+    public static Item.Settings scuteFoodItem(FoodComponent food) {
+        return new Item.Settings().food(food).recipeRemainder(Items.SCUTE);
     }
 
     // 材料
@@ -151,6 +166,44 @@ public class CDModItems {
     public static final Item NAUTILUS_SHELL_BLOCK = blockItem("nautilus_shell_block", CDModBlocks.NAUTILUS_SHELL_BLOCK);
     public static final Item SEA_PICKLE_CRATE = blockItem("sea_pickle_crate", CDModBlocks.SEA_PICKLE_CRATE);
 
+    // 1.3.x 新增：蚯蚓箱 / 蚯蚓土 / 蚯蚓 / 海螺
+    public static final Item WORM_BIN = blockItem("worm_bin", CDModBlocks.WORM_BIN);
+    public static final Item WORMY_DIRT = blockItem("wormy_dirt", CDModBlocks.WORMY_DIRT);
+    public static final Item WORM = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("worm"),
+            new WormItem(new Item.Settings()));
+    public static final Item CONCH = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("conch"),
+            new ConchItem(new Item.Settings().maxCount(1)));
+
+    // 1.3.x 新增：钓具箱 + 钓鱼装备（假饵 / 鱼线）
+    public static final Item TACKLE_BOX = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("tackle_box"),
+            new TackleBoxItem(CDModBlocks.TACKLE_BOX, new Item.Settings().maxCount(1)));
+    public static final Item BARBED_LURE = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("barbed_lure"),
+            new LureItem(new Item.Settings().maxCount(1).maxDamage(64), LureEffect.BARBED));
+    public static final Item DOUBLE_LURE = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("double_lure"),
+            new LureItem(new Item.Settings().maxCount(1).maxDamage(64), LureEffect.DOUBLE));
+    public static final Item MAGNETIC_LURE = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("magnetic_lure"),
+            new LureItem(new Item.Settings().maxCount(1).maxDamage(64), LureEffect.MAGNETIC));
+    public static final Item AUTOMATIC_LURE = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("automatic_lure"),
+            new LureItem(new Item.Settings().maxCount(1).maxDamage(64), LureEffect.AUTOMATIC));
+    public static final Item STORM_LURE = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("storm_lure"),
+            new LureItem(new Item.Settings().maxCount(1).maxDamage(64), LureEffect.STORM));
+    public static final Item FISHING_LINE = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("fishing_line"),
+            new FishingLineItem(new Item.Settings().maxCount(1).maxDamage(64)));
+
+    // 1.3.x 新增：救生圈（方块 + 可穿戴物品，同一 ID）
+    public static final Item LIFE_PRESERVER = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("life_preserver"),
+            new LifePreserverItem(CDModBlocks.LIFE_PRESERVER, new Item.Settings().maxCount(1)));
+
+    // 1.3.x 新增：便条 / 已签名便条（批次 5）
+    public static final Item NOTE = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("note"),
+            new NoteItem(CDModBlocks.NOTE_BLOCK, new Item.Settings().maxCount(16)));
+    public static final Item BOTTLED_NOTE = Registry.register(Registries.ITEM,
+            CrabbersDelightFabric.id("bottled_note"), new BottledNoteItem(new Item.Settings().maxCount(16)));
+    public static final Item MESSAGE_BOTTLE = Registry.register(Registries.ITEM,
+            CrabbersDelightFabric.id("message_bottle"), new MessageBottleItem(new Item.Settings().maxCount(16)));
+    public static final Item SIGNED_NOTE = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("signed_note"),
+            new SignedNoteItem(new Item.Settings().maxCount(16)));
+    public static final Item FISH_PLAQUE = blockItem("fish_plaque", CDModBlocks.FISH_PLAQUE);
     private static Item blockItem(String name, Block block) {
         return Registry.register(Registries.ITEM, CrabbersDelightFabric.id(name),
                 new BlockItem(block, new Item.Settings()));
@@ -184,6 +237,12 @@ public class CDModItems {
     public static final Item COOKED_FROG_LEG = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("cooked_frog_leg"),
             new ConsumableItem(foodItem(CDFoodValues.COOKED_FROG_LEG)));
 
+    // 1.3.x 新增：炸鱼 / 鱼肉三明治
+    public static final Item FRIED_FISH = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("fried_fish"),
+            new ConsumableItem(foodItem(CDFoodValues.FRIED_FISH)));
+    public static final Item FISH_SANDWICH = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("fish_sandwich"),
+            new ConsumableItem(foodItem(CDFoodValues.FISH_SANDWICH)));
+
     // 餐品
     public static final Item CRAB_CAKES = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("crab_cakes"),
             new ConsumableItem(foodItem(CDFoodValues.CRAB_CAKES), true));
@@ -209,10 +268,10 @@ public class CDModItems {
             new ConsumableItem(foodItem(CDFoodValues.COOKED_TROPICAL_FISH_SLICE)));
     public static final Item STUFFED_NAUTILUS_SHELL = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("stuffed_nautilus_shell"),
             new ConsumableItem(shellFoodItem(CDFoodValues.STUFFED_NAUTILUS_SHELL), true));
-    public static final Item SQUID_KEBOB = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("squid_kebob"),
-            new ConsumableItem(foodItem(CDFoodValues.SQUID_KEBOB)));
-    public static final Item FROG_LEG_KEBOB = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("frog_leg_kebob"),
-            new ConsumableItem(foodItem(CDFoodValues.FROG_LEG_KEBOB)));
+    public static final Item SQUID_KEBAB = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("squid_kebab"),
+            new ConsumableItem(foodItem(CDFoodValues.SQUID_KEBAB)));
+    public static final Item FROG_LEG_KEBAB = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("frog_leg_kebab"),
+            new ConsumableItem(foodItem(CDFoodValues.FROG_LEG_KEBAB)));
     public static final Item JAR_OF_PICKLES = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("jar_of_pickles"),
             new ConsumableItem(foodItem(CDFoodValues.JAR_OF_PICKLES).recipeRemainder(Items.GLASS_BOTTLE)));
 
@@ -237,6 +296,10 @@ public class CDModItems {
             new ConsumableItem(bowlFoodItem(CDFoodValues.SHRIMP_FRIED_RICE), true));
     public static final Item CORAL_CRUNCH = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("coral_crunch"),
             new ConsumableItem(bowlFoodItem(CDFoodValues.CORAL_CRUNCH), true));
+
+    // 1.3.x 新增：海龟汤（用海龟鳞甲当碗，喝完返还鳞甲）
+    public static final Item TURTLE_STEW = Registry.register(Registries.ITEM, CrabbersDelightFabric.id("turtle_stew"),
+            new ConsumableItem(scuteFoodItem(CDFoodValues.TURTLE_STEW), true));
 
     public static void register() {
     }

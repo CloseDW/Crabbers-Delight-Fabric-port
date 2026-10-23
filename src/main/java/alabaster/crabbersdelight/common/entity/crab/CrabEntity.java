@@ -6,6 +6,7 @@ import alabaster.crabbersdelight.common.tags.CDModTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.Bucketable;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -25,6 +26,7 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -41,6 +43,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
@@ -61,6 +64,10 @@ public class CrabEntity extends AnimalEntity implements Bucketable {
 
     private static final TrackedData<Integer> VARIANT =
             DataTracker.registerData(CrabEntity.class, TrackedDataHandlerRegistry.INTEGER);
+
+    // 攀爬标志位（对应 1.21 版的 DATA_FLAGS_ID，1bit 表示"贴墙攀爬中"）
+    private static final TrackedData<Byte> CLIMBING_FLAGS =
+            DataTracker.registerData(CrabEntity.class, TrackedDataHandlerRegistry.BYTE);
 
     public CrabEntity(EntityType<? extends AnimalEntity> entityType, World world) {
         super(entityType, world);
@@ -103,6 +110,64 @@ public class CrabEntity extends AnimalEntity implements Bucketable {
         return false;
     }
 
+    // 水流 / 气泡柱不推动螃蟹
+    @Override
+    public boolean isPushedByFluids() {
+        return false;
+    }
+
+    // 攀爬：贴墙即进入攀爬态（与蜘蛛同语义，由原版 LivingEntity 物理消费）
+    @Override
+    public boolean isClimbing() {
+        return this.isCrabClimbing();
+    }
+
+    public boolean isCrabClimbing() {
+        return (this.dataTracker.get(CLIMBING_FLAGS) & 1) != 0;
+    }
+
+    public void setCrabClimbing(boolean climbing) {
+        byte flags = this.dataTracker.get(CLIMBING_FLAGS);
+        if (climbing) {
+            flags = (byte) (flags | 1);
+        } else {
+            flags = (byte) (flags & -2);
+        }
+        this.dataTracker.set(CLIMBING_FLAGS, flags);
+    }
+
+    // 每 tick 扫水平四向，贴着实心方块就进入攀爬态
+    @Override
+    public void tickMovement() {
+        super.tickMovement();
+        if (!this.getWorld().isClient) {
+            boolean nextToWall = false;
+            BlockPos pos = this.getBlockPos();
+            for (Direction direction : Direction.Type.HORIZONTAL) {
+                BlockPos neighbour = pos.offset(direction);
+                if (this.getWorld().getBlockState(neighbour).isSolidBlock(this.getWorld(), neighbour)) {
+                    nextToWall = true;
+                    break;
+                }
+            }
+            this.setCrabClimbing(nextToWall);
+        }
+    }
+
+    @Override
+    protected void pushAway(Entity entity) {
+        super.pushAway(entity);
+        if (entity instanceof CrabEntity) {
+            this.setCrabClimbing(this.horizontalCollision);
+        }
+    }
+
+    // 螃蟹壳体坚硬：不吃摔落伤害
+    @Override
+    public boolean handleFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
+        return false;
+    }
+
     @Override
     public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason,
                                  EntityData entityData, NbtCompound entityNbt) {
@@ -139,6 +204,7 @@ public class CrabEntity extends AnimalEntity implements Bucketable {
         super.initDataTracker();
         this.dataTracker.startTracking(VARIANT, 0);
         this.dataTracker.startTracking(FROM_BUCKET, false);
+        this.dataTracker.startTracking(CLIMBING_FLAGS, (byte) 0);
     }
 
     private int getTypeVariant() {
@@ -236,15 +302,12 @@ public class CrabEntity extends AnimalEntity implements Bucketable {
     @Override
     public void copyDataToStack(ItemStack stack) {
         NbtCompound tag = stack.getOrCreateNbt();
-        Bucketable.copyDataToStack(this, stack);
         tag.putInt("Age", this.getBreedingAge());
         tag.putInt("Variant", this.getTypeVariant());
     }
 
     @Override
     public void copyDataFromNbt(NbtCompound tag) {
-        Bucketable.copyDataFromNbt(this, tag);
-
         if (tag.contains("Age")) {
             this.setBreedingAge(tag.getInt("Age"));
         }

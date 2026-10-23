@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "r": { "item": "farmersdelight:rope" },
+    "w": { "tag": "minecraft:wool" }
+  },
+  "pattern": [
+    "www",
+    "wrw",
+    "www"
+  ],
+  "result": {
+    "item": "crabbersdelight:life_preserver"
+  },
+  "show_notification": true
+}

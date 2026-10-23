@@ -1,0 +1,16 @@
+{
+  "type": "farmersdelight:cooking",
+  "cookingtime": 100,
+  "experience": 0.35,
+  "ingredients": [
+    { "tag": "c:foods/raw_fishes" },
+    { "tag": "c:foods/raw_fishes" },
+    { "tag": "c:foods/raw_fishes" },
+    { "item": "farmersdelight:wheat_dough" }
+  ],
+  "recipe_book_tab": "meals",
+  "result": {
+    "count": 3,
+    "item": "crabbersdelight:fried_fish"
+  }
+}

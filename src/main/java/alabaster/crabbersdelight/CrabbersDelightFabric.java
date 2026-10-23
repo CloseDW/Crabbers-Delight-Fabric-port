@@ -11,7 +11,21 @@ import alabaster.crabbersdelight.common.registry.CDModBlockEntity;
 import alabaster.crabbersdelight.common.registry.CDModMenus;
 import alabaster.crabbersdelight.common.registry.CDModPotions;
 import alabaster.crabbersdelight.common.registry.CDStateProviders;
+import alabaster.crabbersdelight.common.registry.CDModFeatures;
+import alabaster.crabbersdelight.common.worldgen.placement.CDPlacementModifiers;
 import alabaster.crabbersdelight.common.event.VillagerTrade;
+import alabaster.crabbersdelight.common.event.WormDropEvents;
+import alabaster.crabbersdelight.common.event.ConchLootEvents;
+import alabaster.crabbersdelight.common.event.LifePreserverEvents;
+import alabaster.crabbersdelight.common.event.FishSizeEvents;
+import alabaster.crabbersdelight.common.event.FishingGearEvents;
+import alabaster.crabbersdelight.common.fishingspot.FishingSpotManager;
+import alabaster.crabbersdelight.common.command.CDDebugCommand;
+import alabaster.crabbersdelight.common.network.NoteNetworking;
+import alabaster.crabbersdelight.common.network.LifePreserverNetworking;
+import alabaster.crabbersdelight.common.event.NoteLootEvents;
+import alabaster.crabbersdelight.common.registry.CDModRecipes;
+import alabaster.crabbersdelight.common.registry.CDModLootFunctions;
 import alabaster.crabbersdelight.common.entity.crab.CrabEntity;
 import alabaster.crabbersdelight.common.item.CrabClawItem;
 import alabaster.crabbersdelight.common.worldgen.CDWorldGen;
@@ -59,20 +73,26 @@ public class CrabbersDelightFabric implements ModInitializer {
 
 		// 村民交易（渔民收购海鲜 / 流浪商人用珍珠换宝藏）
 		VillagerTrade.register();
+		CDModRecipes.register();
 
 		// 生成器类型 + 世界生成
 		CDTrunkPlacerTypes.register();
 		CDFoliagePlacerTypes.register();
+		CDModFeatures.register();
+		CDPlacementModifiers.register();
 		CDWorldGen.register();
 
-		// 螃蟹：属性 + 生成规则 + 群系生成
+		// 螃蟹：属性 + 生成规则 + 群系生成（数量/权重/开关读配置，默认 10/2/3）
 		FabricDefaultAttributeRegistry.register(CDModEntities.CRAB, CrabEntity.createAttributes());
 		SpawnRestriction.register(CDModEntities.CRAB, SpawnRestriction.Location.ON_GROUND,
 				Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, CrabEntity::checkCrabSpawnRules);
-		BiomeModifications.addSpawn(
-				BiomeSelectors.includeByKey(BiomeKeys.MANGROVE_SWAMP, BiomeKeys.SWAMP, BiomeKeys.BEACH,
-						BiomeKeys.STONY_SHORE, BiomeKeys.SNOWY_BEACH),
-				SpawnGroup.CREATURE, CDModEntities.CRAB, 10, 2, 5);
+		if (Config.GENERATE_CRAB_SPAWNS.get()) {
+			BiomeModifications.addSpawn(
+					BiomeSelectors.includeByKey(BiomeKeys.MANGROVE_SWAMP, BiomeKeys.SWAMP, BiomeKeys.BEACH,
+							BiomeKeys.STONY_SHORE, BiomeKeys.SNOWY_BEACH),
+					SpawnGroup.CREATURE, CDModEntities.CRAB,
+					Config.CRAB_SPAWN_WEIGHT.get(), Config.CRAB_SPAWN_MIN.get(), Config.CRAB_SPAWN_MAX.get());
+		}
 
 		// 可燃性（Forge 的 isFlammable/getFlammability 在这里等价）
 		FlammableBlockRegistry.getDefaultInstance().add(CDModBlocks.PALM_LOG, 5, 5);
@@ -104,6 +124,33 @@ public class CrabbersDelightFabric implements ModInitializer {
 			CrabClawItem.handleAttackEntity(player, world, entity);
 			return ActionResult.PASS;
 		});
+
+		// 蚯蚓：挖泥土 1% 掉落（等价 Forge BlockEvent.BreakEvent）
+		WormDropEvents.register();
+
+		// 海螺：埋藏宝藏战利品池（等价 Forge 全局战利品修饰器）
+		ConchLootEvents.register();
+
+		// 救生圈：穿戴时的浮力
+		LifePreserverEvents.register();
+
+		// 鱼尺寸：战利品函数 + 钓鱼战利品表注入
+		CDModLootFunctions.register();
+		FishSizeEvents.register();
+
+		// 钓鱼装备：鱼线甩得更远 / 磁吸与风暴饵的幸运 / 自动与倒刺饵的钓钩操作
+		FishingGearEvents.register();
+
+		// 钓点：定期在玩家附近水面生成
+		FishingSpotManager.register();
+
+		// 便条的网络同步（编辑 / 签名）
+		NoteNetworking.register();
+		LifePreserverNetworking.register();
+		NoteLootEvents.register();
+
+		// 调试自检命令：/cddebug gear | spot | config
+		CDDebugCommand.register();
 
 		LOGGER.info("Crabber's Delight (Fabric port) loaded!");
 	}

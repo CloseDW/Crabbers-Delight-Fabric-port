@@ -51,6 +51,12 @@ public class CDFoodValues {
     public static final FoodComponent COOKED_FROG_LEG = new FoodComponent.Builder()
             .hunger(4).saturationModifier(0.7f).meat().build();
 
+    public static final FoodComponent FRIED_FISH = new FoodComponent.Builder()
+            .hunger(5).saturationModifier(0.6f).meat().build();
+
+    public static final FoodComponent FISH_SANDWICH = new FoodComponent.Builder()
+            .hunger(10).saturationModifier(0.8f).build();
+
     // 饮品
     public static final FoodComponent KELP_SHAKE = new FoodComponent.Builder()
             .alwaysEdible()
@@ -112,7 +118,7 @@ public class CDFoodValues {
 
     public static final FoodComponent SEAFOOD_GUMBO = new FoodComponent.Builder()
             .hunger(12).saturationModifier(0.9f)
-            .statusEffect(new StatusEffectInstance(ModEffects.NOURISHMENT.get(), LONG_DURATION, 0), 1.0F).build();
+            .statusEffect(new StatusEffectInstance(ModEffects.NOURISHMENT.get(), MEDIUM_DURATION, 0), 1.0F).build();
 
     public static final FoodComponent FISH_STICK = new FoodComponent.Builder()
             .hunger(5).saturationModifier(0.6f).build();
@@ -133,10 +139,10 @@ public class CDFoodValues {
             .statusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, BRIEF_DURATION, 0), 1.0F)
             .statusEffect(new StatusEffectInstance(StatusEffects.WATER_BREATHING, MEDIUM_DURATION, 0), 1.0F).build();
 
-    public static final FoodComponent SQUID_KEBOB = new FoodComponent.Builder()
+    public static final FoodComponent SQUID_KEBAB = new FoodComponent.Builder()
             .hunger(8).saturationModifier(0.8f).build();
 
-    public static final FoodComponent FROG_LEG_KEBOB = new FoodComponent.Builder()
+    public static final FoodComponent FROG_LEG_KEBAB = new FoodComponent.Builder()
             .hunger(9).saturationModifier(0.8f).build();
 
     public static final FoodComponent CORAL_CRUNCH = new FoodComponent.Builder()
@@ -146,4 +152,8 @@ public class CDFoodValues {
     public static final FoodComponent CLAWSTER_FEAST = new FoodComponent.Builder()
             .hunger(10).saturationModifier(0.9f)
             .statusEffect(new StatusEffectInstance(ModEffects.NOURISHMENT.get(), LONG_DURATION, 0), 1.0F).build();
+
+    public static final FoodComponent TURTLE_STEW = new FoodComponent.Builder()
+            .hunger(7).saturationModifier(0.6f).snack()
+            .statusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, SHORT_DURATION, 0), 1.0F).build();
 }

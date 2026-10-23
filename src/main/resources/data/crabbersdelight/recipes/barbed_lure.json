@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "i": { "item": "minecraft:iron_nugget" }
+  },
+  "pattern": [
+    "  i",
+    "i i",
+    "iii"
+  ],
+  "result": {
+    "item": "crabbersdelight:barbed_lure"
+  },
+  "show_notification": true
+}
